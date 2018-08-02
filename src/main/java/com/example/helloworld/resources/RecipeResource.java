@@ -33,4 +33,9 @@ public class RecipeResource {
         return recipeDAO.findAll();
     }
 
+//    @GET
+//    public String getById() {
+//        return recipeDAO.findById();
+//    }
+
 }
