@@ -5,7 +5,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "recipes")
-@NamedQueries({ @NamedQuery( name = "com.example.helloworld.core.Recipe.findAll", query = "SELECT r FROM Recipe r" ) })
+@NamedQueries({ @NamedQuery( name = "com.example.helloworld.core.Recipe.findAll", query = "SELECT r FROM Recipe r" )
+    })
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

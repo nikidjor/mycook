@@ -3,12 +3,10 @@ package com.example.helloworld;
 import com.example.helloworld.auth.ExampleAuthenticator;
 import com.example.helloworld.auth.ExampleAuthorizer;
 import com.example.helloworld.cli.RenderCommand;
-import com.example.helloworld.core.Person;
-import com.example.helloworld.core.Recipe;
-import com.example.helloworld.core.Template;
-import com.example.helloworld.core.User;
+import com.example.helloworld.core.*;
 import com.example.helloworld.db.PersonDAO;
 import com.example.helloworld.db.RecipeDAO;
+import com.example.helloworld.db.CategoryDAO;
 import com.example.helloworld.filter.DateRequiredFeature;
 import com.example.helloworld.health.TemplateHealthCheck;
 import com.example.helloworld.resources.*;
@@ -36,7 +34,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     }
 
     private final HibernateBundle<HelloWorldConfiguration> hibernateBundle =
-        new HibernateBundle<HelloWorldConfiguration>(Person.class, Recipe.class) {
+        new HibernateBundle<HelloWorldConfiguration>(Person.class, Recipe.class, Category.class) {
             @Override
             public DataSourceFactory getDataSourceFactory(HelloWorldConfiguration configuration) {
                 return configuration.getDataSourceFactory();
@@ -79,6 +77,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     public void run(HelloWorldConfiguration configuration, Environment environment) {
         final PersonDAO personDao = new PersonDAO(hibernateBundle.getSessionFactory());
         final RecipeDAO recipeDao = new RecipeDAO(hibernateBundle.getSessionFactory());
+        final CategoryDAO categoryDao = new CategoryDAO(hibernateBundle.getSessionFactory());
         final Template template = configuration.buildTemplate();
 
         environment.healthChecks().register("template", new TemplateHealthCheck(template));
@@ -97,6 +96,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
         environment.jersey().register(new PeopleResource(personDao));
         environment.jersey().register(new PersonResource(personDao));
         environment.jersey().register(new RecipeResource(recipeDao));
+        environment.jersey().register(new CategoryResource(categoryDao));
         environment.jersey().register(new FilteredResource());
     }
 }

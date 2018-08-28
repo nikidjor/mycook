@@ -12,8 +12,8 @@ public class RecipeDAO extends AbstractDAO<Recipe> {
         super(factory);
     }
 
-    public Optional<Recipe> findById(Long id) {
-        return Optional.ofNullable(get(id));
+    public Recipe findById(Long id) {
+        return (Recipe) currentSession().get(Recipe.class, id);
     }
 
     public Recipe create(Recipe recipe) {
