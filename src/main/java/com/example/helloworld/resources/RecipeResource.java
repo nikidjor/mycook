@@ -5,14 +5,10 @@ import com.example.helloworld.db.RecipeDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.params.LongParam;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.Optional;
+
 
 @Path("/recipes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +37,24 @@ public class RecipeResource {
     @UnitOfWork
     public Recipe get(@PathParam("id") Long id) {
         return recipeDAO.findById(id) ;
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @UnitOfWork
+    public void delete(@PathParam("id") Long id) {
+        recipeDAO.delete(recipeDAO.findById(id));
+    }
+
+    @PUT
+    @Path("/{id}")
+    @UnitOfWork
+    public Recipe update(@PathParam("id") Long id, Recipe recipe) {
+        recipe = recipe.setId(id);
+        recipeDAO.update(recipe);
+
+        return recipe;
+
     }
 
 }
