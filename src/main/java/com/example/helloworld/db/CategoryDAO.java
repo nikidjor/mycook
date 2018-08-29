@@ -12,8 +12,16 @@ public class CategoryDAO extends AbstractDAO<Category> {
         super(factory);
     }
 
-    public Optional<Category> findById(Long id) {
-        return Optional.ofNullable(get(id));
+    public Category findById(Long id) {
+        return (Category) currentSession().get(Category.class, id);
+    }
+
+    public void delete(Category category){
+        currentSession().delete(category);
+    }
+
+    public void update(Category category) {
+        currentSession().saveOrUpdate(category);
     }
 
     public Category create(Category category) {

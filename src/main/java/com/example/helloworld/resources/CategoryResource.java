@@ -4,10 +4,7 @@ import com.example.helloworld.core.Category;
 import com.example.helloworld.db.CategoryDAO;
 import io.dropwizard.hibernate.UnitOfWork;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -32,5 +29,30 @@ public class CategoryResource {
     public List<Category> listCategory() {
         return categoryDAO.findAll();
     }
+
+    @GET
+    @Path("/{id}")
+    @UnitOfWork
+    public Category get(@PathParam("id") Long id) {
+        return categoryDAO.findById(id) ;
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @UnitOfWork
+    public void delete(@PathParam("id") Long id) {
+        categoryDAO.delete(categoryDAO.findById(id));
+    }
+
+    @PUT
+    @Path("/{id}")
+    @UnitOfWork
+    public Category update(@PathParam("id") Long id, Category category) {
+        category = category.setId(id);
+        categoryDAO.update(category);
+
+        return category;
+    }
+
 
 }
