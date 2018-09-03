@@ -48,9 +48,9 @@ public class CategoryResource {
     @Path("/{id}")
     @UnitOfWork
     public Category update(@PathParam("id") Long id, Category category) {
-        category = category.setId(id);
-        categoryDAO.update(category);
-
+        Category categoryDb = categoryDAO.findById(id);
+        categoryDb.setTitle(category.getTitle());
+        categoryDAO.update(categoryDb);
         return category;
     }
 

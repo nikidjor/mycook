@@ -50,9 +50,12 @@ public class RecipeResource {
     @Path("/{id}")
     @UnitOfWork
     public Recipe update(@PathParam("id") Long id, Recipe recipe) {
-        recipe = recipe.setId(id);
-        recipeDAO.update(recipe);
+        Recipe recipeDb = recipeDAO.findById(id);
+        recipeDb.setTitle(recipe.getTitle());
+        recipeDb.setDescription(recipe.getDescription());
+        recipeDb.setCategory(recipe.getCategory());
 
+        recipeDAO.update(recipe);
         return recipe;
 
     }

@@ -1,7 +1,11 @@
 package com.example.helloworld.core;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.Objects;
+
+import static javax.persistence.CascadeType.*;
 
 @Entity
 @Table(name = "recipes")
@@ -19,7 +23,7 @@ public class Recipe {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "category")
+    @JoinColumn(name = "category", nullable = false)
     private Category category;
 
     public Recipe() {

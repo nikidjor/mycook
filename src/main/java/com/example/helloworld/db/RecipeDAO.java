@@ -1,5 +1,6 @@
 package com.example.helloworld.db;
 
+import com.example.helloworld.core.Category;
 import com.example.helloworld.core.Recipe;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,8 @@ public class RecipeDAO extends AbstractDAO<Recipe> {
     }
 
     public Recipe create(Recipe recipe) {
+        Category category = currentSession().get(Category.class, recipe.getCategory().getId());
+        recipe.setCategory(category);
         return persist(recipe);
     }
 

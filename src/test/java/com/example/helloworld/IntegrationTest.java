@@ -1,24 +1,17 @@
 package com.example.helloworld;
 
-import com.example.helloworld.api.Saying;
-import com.example.helloworld.core.Person;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
-import org.eclipse.jetty.http.HttpStatus;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,8 +23,8 @@ public class IntegrationTest {
 
     @ClassRule
     public static final DropwizardAppRule<HelloWorldConfiguration> RULE = new DropwizardAppRule<>(
-            HelloWorldApplication.class, CONFIG_PATH,
-            ConfigOverride.config("database.url", "jdbc:h2:" + TMP_FILE));
+        HelloWorldApplication.class, CONFIG_PATH,
+        ConfigOverride.config("database.url", "jdbc:h2:" + TMP_FILE));
 
     @BeforeClass
     public static void migrateDb() throws Exception {
@@ -44,50 +37,6 @@ public class IntegrationTest {
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
-    }
-
-    @Test
-    public void testHelloWorld() throws Exception {
-        final Optional<String> name = Optional.of("Dr. IntegrationTest");
-        final Saying saying = RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/hello-world")
-                .queryParam("name", name.get())
-                .request()
-                .get(Saying.class);
-        assertThat(saying.getContent()).isEqualTo(RULE.getConfiguration().buildTemplate().render(name));
-    }
-
-    @Test
-    public void testPostPerson() throws Exception {
-        final Person person = new Person("Dr. IntegrationTest", "Chief Wizard");
-        final Person newPerson = postPerson(person);
-        assertThat(newPerson.getId()).isNotNull();
-        assertThat(newPerson.getFullName()).isEqualTo(person.getFullName());
-        assertThat(newPerson.getJobTitle()).isEqualTo(person.getJobTitle());
-    }
-
-    @Test
-    public void testRenderingPersonFreemarker() throws Exception {
-        testRenderingPerson("view_freemarker");
-    }
-
-    @Test
-    public void testRenderingPersonMustache() throws Exception {
-        testRenderingPerson("view_mustache");
-    }
-
-    private void testRenderingPerson(String viewName) throws Exception {
-        final Person person = new Person("Dr. IntegrationTest", "Chief Wizard");
-        final Person newPerson = postPerson(person);
-        final String url = "http://localhost:" + RULE.getLocalPort() + "/people/" + newPerson.getId() + "/" + viewName;
-        Response response = RULE.client().target(url).request().get();
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK_200);
-    }
-
-    private Person postPerson(Person person) {
-        return RULE.client().target("http://localhost:" + RULE.getLocalPort() + "/people")
-                .request()
-                .post(Entity.entity(person, MediaType.APPLICATION_JSON_TYPE))
-                .readEntity(Person.class);
     }
 
     @Test
