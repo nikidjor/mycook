@@ -5,7 +5,6 @@ import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
-import java.util.Optional;
 
 public class RecipeDAO extends AbstractDAO<Recipe> {
     public RecipeDAO(SessionFactory factory) {
@@ -16,7 +15,7 @@ public class RecipeDAO extends AbstractDAO<Recipe> {
         return (Recipe) currentSession().get(Recipe.class, id);
     }
 
-    public void delete(Recipe recipe){
+    public void delete(Recipe recipe) {
         currentSession().delete(recipe);
     }
 

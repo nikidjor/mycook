@@ -5,8 +5,8 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "recipes")
-@NamedQueries({ @NamedQuery( name = "com.example.helloworld.core.Recipe.findAll", query = "SELECT r FROM Recipe r" )
-    })
+@NamedQueries({@NamedQuery(name = "com.example.helloworld.core.Recipe.findAll", query = "SELECT r FROM Recipe r")
+})
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,12 +18,17 @@ public class Recipe {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
     public Recipe() {
     }
 
-    public Recipe(String title, String description) {
+    public Recipe(String title, String description, Category category) {
         this.title = title;
         this.description = description;
+        this.category = category;
     }
 
     public long getId() {
@@ -51,6 +56,14 @@ public class Recipe {
         this.description = description;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,11 +71,12 @@ public class Recipe {
         Recipe recipe = (Recipe) o;
         return id == recipe.id &&
             Objects.equals(title, recipe.title) &&
-            Objects.equals(description, recipe.description);
+            Objects.equals(description, recipe.description) &&
+            Objects.equals(category, recipe.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description);
+        return Objects.hash(id, title, description, category);
     }
 }

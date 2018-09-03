@@ -40,4 +40,18 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="4" author="codahale">
+        <addColumn tableName="recipes">
+            <column name="category" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="5" author="codahale">
+    <addForeignKeyConstraint baseColumnNames="category"
+                             baseTableName="recipes"
+                             constraintName="fk_category"
+                             onDelete="CASCADE"
+                             onUpdate="RESTRICT"
+                             referencedColumnNames="id"
+                             referencedTableName="categories"/>
+    </changeSet>
 </databaseChangeLog>
