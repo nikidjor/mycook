@@ -22,8 +22,8 @@ public class IntegrationTest {
     private static final String CONFIG_PATH = ResourceHelpers.resourceFilePath("test-example.yml");
 
     @ClassRule
-    public static final DropwizardAppRule<HelloWorldConfiguration> RULE = new DropwizardAppRule<>(
-        HelloWorldApplication.class, CONFIG_PATH,
+    public static final DropwizardAppRule<MyCookConfiguration> RULE = new DropwizardAppRule<>(
+        MyCookApplication.class, CONFIG_PATH,
         ConfigOverride.config("database.url", "jdbc:h2:" + TMP_FILE));
 
     @BeforeClass

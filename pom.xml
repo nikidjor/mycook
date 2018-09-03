@@ -244,7 +244,7 @@
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>com.example.helloworld.HelloWorldApplication</mainClass>
+                            <mainClass>com.example.helloworld.MyCookApplication</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>

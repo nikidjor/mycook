@@ -15,20 +15,17 @@ import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
-import java.util.Map;
-
-public class HelloWorldApplication extends Application<HelloWorldConfiguration> {
+public class MyCookApplication extends Application<MyCookConfiguration> {
     public static void main(String[] args) throws Exception {
-        new HelloWorldApplication().run(args);
+        new MyCookApplication().run(args);
     }
 
-    private final HibernateBundle<HelloWorldConfiguration> hibernateBundle =
-        new HibernateBundle<HelloWorldConfiguration>(Recipe.class, Category.class) {
+    private final HibernateBundle<MyCookConfiguration> hibernateBundle =
+        new HibernateBundle<MyCookConfiguration>(Recipe.class, Category.class) {
             @Override
-            public DataSourceFactory getDataSourceFactory(HelloWorldConfiguration configuration) {
+            public DataSourceFactory getDataSourceFactory(MyCookConfiguration configuration) {
                 return configuration.getDataSourceFactory();
             }
         };
@@ -39,7 +36,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     }
 
     @Override
-    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
+    public void initialize(Bootstrap<MyCookConfiguration> bootstrap) {
         // Enable variable substitution with environment variables
         bootstrap.setConfigurationSourceProvider(
             new SubstitutingSourceProvider(
@@ -49,9 +46,9 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
         );
 
         bootstrap.addBundle(new AssetsBundle());
-        bootstrap.addBundle(new MigrationsBundle<HelloWorldConfiguration>() {
+        bootstrap.addBundle(new MigrationsBundle<MyCookConfiguration>() {
             @Override
-            public DataSourceFactory getDataSourceFactory(HelloWorldConfiguration configuration) {
+            public DataSourceFactory getDataSourceFactory(MyCookConfiguration configuration) {
                 return configuration.getDataSourceFactory();
             }
         });
@@ -59,7 +56,7 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
     }
 
     @Override
-    public void run(HelloWorldConfiguration configuration, Environment environment) {
+    public void run(MyCookConfiguration configuration, Environment environment) {
         final RecipeDAO recipeDao = new RecipeDAO(hibernateBundle.getSessionFactory());
         final CategoryDAO categoryDao = new CategoryDAO(hibernateBundle.getSessionFactory());
 
