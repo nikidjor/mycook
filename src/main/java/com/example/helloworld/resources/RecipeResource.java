@@ -54,6 +54,7 @@ public class RecipeResource {
         recipeDb.setTitle(recipe.getTitle());
         recipeDb.setDescription(recipe.getDescription());
         recipeDb.setCategory(recipe.getCategory());
+        recipeDb.setUser(recipe.getUser());
 
         recipeDAO.update(recipe);
         return recipe;

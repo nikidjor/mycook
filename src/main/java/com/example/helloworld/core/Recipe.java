@@ -26,13 +26,18 @@ public class Recipe {
     @JoinColumn(name = "category", nullable = false)
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name="user", nullable = false)
+    private User user;
+
     public Recipe() {
     }
 
-    public Recipe(String title, String description, Category category) {
+    public Recipe(String title, String description, Category category, User user) {
         this.title = title;
         this.description = description;
         this.category = category;
+        this.user = user;
     }
 
     public long getId() {
@@ -68,6 +73,10 @@ public class Recipe {
         this.category = category;
     }
 
+    public User getUser() {return user;}
+
+    public void setUser(User user) { this.user = user;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -76,11 +85,12 @@ public class Recipe {
         return id == recipe.id &&
             Objects.equals(title, recipe.title) &&
             Objects.equals(description, recipe.description) &&
-            Objects.equals(category, recipe.category);
+            Objects.equals(category, recipe.category)&&
+            Objects.equals(user, recipe.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, category);
+        return Objects.hash(id, title, description, category, user);
     }
 }

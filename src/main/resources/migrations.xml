@@ -70,4 +70,18 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="7" author="codahale">
+        <addColumn tableName="recipes">
+            <column name="user" type="bigint"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="8" author="codahale">
+        <addForeignKeyConstraint baseColumnNames="user"
+                                 baseTableName="recipes"
+                                 constraintName="fk_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
 </databaseChangeLog>
