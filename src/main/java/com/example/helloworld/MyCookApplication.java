@@ -2,10 +2,13 @@ package com.example.helloworld;
 
 import com.example.helloworld.core.Category;
 import com.example.helloworld.core.Recipe;
+import com.example.helloworld.core.User;
 import com.example.helloworld.db.CategoryDAO;
 import com.example.helloworld.db.RecipeDAO;
+import com.example.helloworld.db.UserDAO;
 import com.example.helloworld.resources.CategoryResource;
 import com.example.helloworld.resources.RecipeResource;
+import com.example.helloworld.resources.UserResource;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
@@ -23,7 +26,7 @@ public class MyCookApplication extends Application<MyCookConfiguration> {
     }
 
     private final HibernateBundle<MyCookConfiguration> hibernateBundle =
-        new HibernateBundle<MyCookConfiguration>(Recipe.class, Category.class) {
+        new HibernateBundle<MyCookConfiguration>(Recipe.class, Category.class, User.class) {
             @Override
             public DataSourceFactory getDataSourceFactory(MyCookConfiguration configuration) {
                 return configuration.getDataSourceFactory();
@@ -59,9 +62,11 @@ public class MyCookApplication extends Application<MyCookConfiguration> {
     public void run(MyCookConfiguration configuration, Environment environment) {
         final RecipeDAO recipeDao = new RecipeDAO(hibernateBundle.getSessionFactory());
         final CategoryDAO categoryDao = new CategoryDAO(hibernateBundle.getSessionFactory());
+        final UserDAO userDao = new UserDAO(hibernateBundle.getSessionFactory());
 
         environment.jersey().register(RolesAllowedDynamicFeature.class);
         environment.jersey().register(new RecipeResource(recipeDao));
         environment.jersey().register(new CategoryResource(categoryDao));
+        environment.jersey().register(new UserResource(userDao));
     }
 }
