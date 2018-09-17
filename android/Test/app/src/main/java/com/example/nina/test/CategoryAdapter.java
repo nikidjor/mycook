@@ -21,14 +21,17 @@ public class CategoryAdapter extends FragmentPagerAdapter {
             return new BusinessFragment();
         } else if (position == 1) {
             return new TechnologyFragment();
-        } else
+        } else if (position == 2) {
             return new SportsFragment();
+        } else {
+            return new PinnedFragment();
+        }
 
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return 4;
     }
 
     @Override
@@ -37,8 +40,11 @@ public class CategoryAdapter extends FragmentPagerAdapter {
             return mContext.getString(R.string.category_business);
         } else if (position == 1) {
             return mContext.getString(R.string.category_technology);
-        } else
+        } else if (position == 2) {
             return mContext.getString(R.string.category_sports);
+        } else {
+            return mContext.getString(R.string.category_pinned);
+        }
 
     }
 }
