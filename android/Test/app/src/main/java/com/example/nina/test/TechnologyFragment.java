@@ -12,10 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.nina.test.db.AppDatabase;
+import com.example.nina.test.db.PinnedNews;
+import com.example.nina.test.db.PinnedNewsDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +28,7 @@ import java.util.List;
 public class TechnologyFragment extends Fragment {
 
     private String NEWSAPI_URL =
-            "https://newsapi.org/v2/top-headlines?country=rs&category=technology&apiKey=3ee7e20cceb94efb84ae7fec52e65ac8";
+        "https://newsapi.org/v2/top-headlines?country=rs&category=technology&apiKey=3ee7e20cceb94efb84ae7fec52e65ac8";
 
     private NewsAdapter mAdapter;
 
@@ -40,24 +45,38 @@ public class TechnologyFragment extends Fragment {
         TechnologyFragment.NewsAsyncTask task = new TechnologyFragment.NewsAsyncTask();
         task.execute(NEWSAPI_URL);
 
-        final ListView newsListView = (ListView)rootView.findViewById(R.id.list);
+        final ListView newsListView = (ListView) rootView.findViewById(R.id.list);
         mAdapter = new NewsAdapter(getActivity(), new ArrayList<News>());
         newsListView.setAdapter(mAdapter);
+
+        final AppDatabase database = ((MainActivity) getActivity()).getDatabase();
 
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 News news = mAdapter.getItem(i);
                 Uri newsUri = Uri.parse(news.getUrl());
-                Intent webIntent = new Intent(Intent.ACTION_VIEW,newsUri);
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, newsUri);
                 startActivity(webIntent);
+            }
+        });
+        newsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                News news = mAdapter.getItem(position);
+                PinnedNewsDAO dao = database.pinnedNewsDao();
+                dao.addPinnedNews(new PinnedNews(UUID.randomUUID().toString(), news.getUrl()));
+                Toast.makeText(TechnologyFragment.this.getContext(), "Pinned: " + dao.getAllPinnedNews().size(), Toast.LENGTH_LONG).show();
+
+                return true;
             }
         });
 
         return rootView;
 
     }
-    private class NewsAsyncTask extends AsyncTask<String,Void,List<News>> {
+
+    private class NewsAsyncTask extends AsyncTask<String, Void, List<News>> {
 
         private ProgressDialog progressDialog;
 
@@ -75,18 +94,18 @@ public class TechnologyFragment extends Fragment {
             progressDialog.show();
             super.onPreExecute();
         }
+
         @Override
         protected void onPostExecute(List<News> data) {
             mAdapter.clear();
-            if(progressDialog.isShowing()){
+            if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
 
-            if (data != null && !data.isEmpty()){
+            if (data != null && !data.isEmpty()) {
                 mAdapter.addAll(data);
             }
         }
-
 
 
     }
