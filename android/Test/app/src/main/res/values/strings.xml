@@ -3,9 +3,10 @@
 
     <string name="category_business">Business</string>
 
-    <string name="category_technology">Technology</string>
-
+    <string name="category_technology">Tech</string>
     <string name="category_sports">Sports</string>
+    <string name="category_pinned">Pinned</string>
+
     <string name="action_setting" />
     <string name="version" />
     <string name="dev" />

@@ -14,7 +14,7 @@ public interface PinnedNewsDAO {
     void addPinnedNews(PinnedNews news);
 
     @Query("select * from pinned")
-    public List<PinnedNews> getAllPinnedNews();
+    List<PinnedNews> getAllPinnedNews();
 
 //
 //    @Query("select * from user where id = :userId")
