@@ -65,7 +65,7 @@ public class TechnologyFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = mAdapter.getItem(position);
                 PinnedNewsDAO dao = database.pinnedNewsDao();
-                dao.addPinnedNews(new PinnedNews(UUID.randomUUID().toString(), news.getUrl()));
+                dao.addPinnedNews(new PinnedNews(UUID.randomUUID().toString(), news.getUrl(), news.getHouse(), news.getDate()));
                 Toast.makeText(TechnologyFragment.this.getContext(), "Pinned: " + dao.getAllPinnedNews().size(), Toast.LENGTH_LONG).show();
 
                 return true;

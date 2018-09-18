@@ -16,13 +16,7 @@ public interface PinnedNewsDAO {
     @Query("select * from pinned")
     List<PinnedNews> getAllPinnedNews();
 
-//
-//    @Query("select * from user where id = :userId")
-//    public List<User> getUser(long userId);
-//
-//    @Update(onConflict = OnConflictStrategy.REPLACE)
-//    void updateUser(User user);
-//
-//    @Query("delete from user")
-//    void removeAllUsers();
+
+     @Query("delete from pinned")
+     void removeAllPinnedNews();
 }

@@ -31,14 +31,14 @@ public class PinnedNewsAdapter extends ArrayAdapter<PinnedNews> {
 
         //todo fixme with real news content
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.date_text_view);
-        dateTextView.setText(currentNews.getId());
+        dateTextView.setText(currentNews.getDate());
 
 
         TextView titleTextView = (TextView) listItemView.findViewById(R.id.title_text_view);
         titleTextView.setText(currentNews.getNewsUrl());
 
         TextView houseTextView = (TextView) listItemView.findViewById(R.id.house_text_view);
-        houseTextView.setText("house");
+        houseTextView.setText(currentNews.getHouse());
 
         return listItemView;
     }
